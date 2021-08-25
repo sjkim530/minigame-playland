@@ -1,5 +1,5 @@
-export const gamePieces = {
-  0: { shape: [[0]] },
+const gamePieces = {
+  0: { shape: [[0]], color: "255,255,255" },
   I: {
     shape: [
       [0, "I", 0, 0],
@@ -7,6 +7,7 @@ export const gamePieces = {
       [0, "I", 0, 0],
       [0, "I", 0, 0],
     ],
+    color: "167, 199, 231",
   },
   J: {
     shape: [
@@ -14,6 +15,7 @@ export const gamePieces = {
       [0, "J", 0],
       ["J", "J", 0],
     ],
+    color: "193, 225, 193",
   },
   L: {
     shape: [
@@ -21,12 +23,14 @@ export const gamePieces = {
       [0, "L", 0],
       [0, "L", "L"],
     ],
+    color: "253, 253, 150",
   },
   O: {
     shape: [
       ["O", "O"],
       ["O", "O"],
     ],
+    color: "250, 200, 152",
   },
   S: {
     shape: [
@@ -34,6 +38,7 @@ export const gamePieces = {
       ["S", "S", 0],
       [0, 0, 0],
     ],
+    color: "250, 160, 160",
   },
   Z: {
     shape: [
@@ -41,6 +46,7 @@ export const gamePieces = {
       [0, "Z", "Z"],
       [0, 0, 0],
     ],
+    color: "203, 195, 227",
   },
   T: {
     shape: [
@@ -48,5 +54,8 @@ export const gamePieces = {
       ["T", "T", "T"],
       [0, 0, 0],
     ],
+    color: "177, 144, 127",
   },
 };
+
+export default gamePieces;
