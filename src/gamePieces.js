@@ -58,4 +58,11 @@ const gamePieces = {
   },
 };
 
+export function randomPiece() {
+  const bank = "IJLOSZT";
+  const random = bank[Math.floor(Math.random() * bank.length)];
+
+  return gamePieces[random];
+}
+
 export default gamePieces;
