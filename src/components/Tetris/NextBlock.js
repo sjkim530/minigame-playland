@@ -1,5 +1,10 @@
 function NextBlock() {
-  return <div>Next Block</div>;
+  return (
+    <div className="next-block-container">
+      <h3>Next Block</h3>
+      <p>Block</p>
+    </div>
+  );
 }
 
 export default NextBlock;

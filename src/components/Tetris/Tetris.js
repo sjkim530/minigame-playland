@@ -8,10 +8,12 @@ function Tetris() {
   }
 
   return (
-    <div>
+    <div className="tetris-container">
       <Board createBoard={createBoard()} />
-      <NextBlock />
-      <Score />
+      <div className="side-container">
+        <NextBlock />
+        <Score />
+      </div>
     </div>
   );
 }
