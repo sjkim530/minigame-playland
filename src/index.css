@@ -9,8 +9,8 @@ body {
 
 .board {
   display: grid;
-  grid-template-rows: repeat(20, calc(25vw / 12));
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(21, calc(25vw / 10));
+  grid-template-columns: repeat(10, 1fr);
   grid-gap: 1px;
   border: 2px solid #333;
   width: 100%;
