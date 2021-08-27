@@ -23,6 +23,7 @@ function Tetris() {
     startPlayer();
   }
 
+  // function startPlayer() {
   const startPlayer = useCallback(() => {
     setPlayer({
       position: { x: 3, y: 0 },
@@ -30,13 +31,22 @@ function Tetris() {
       collision: false,
     });
   }, []);
+  // }
 
   function movePlayer(direction) {
-    updatePlayer({ x: direction, y: 0, collision: false });
+    if (direction > 0) {
+      if (!detectCollision(player, board, { x: direction, y: 0 }))
+        updatePlayer({ x: direction - 0.5, y: 0, collision: false });
+    } else {
+      if (!detectCollision(player, board, { x: direction, y: 0 }))
+        updatePlayer({ x: direction + 0.5, y: 0, collision: false });
+    }
   }
 
   function dropPlayer() {
-    updatePlayer({ x: 0, y: 1, collision: false });
+    if (!detectCollision(player, board, { x: 0, y: 1 }))
+      updatePlayer({ x: 0, y: 0.5, collision: false });
+    else updatePlayer({ x: 0, y: 0, collision: true });
   }
 
   function handleKeyPress(e) {
@@ -50,16 +60,33 @@ function Tetris() {
   }
 
   function updatePlayer(playerObj) {
-    setPlayer((prev) =>
-      console.log((prev.position.x += playerObj.position.x))({
-        ...prev,
-        position: {
-          x: (prev.position.x += playerObj.position.x),
-          y: (prev.position.y += playerObj.position.y),
-        },
-        collision: playerObj.collision,
-      })
-    );
+    setPlayer((prev) => ({
+      ...prev,
+      position: {
+        x: (prev.position.x += playerObj.x),
+        y: (prev.position.y += playerObj.y),
+      },
+      collision: playerObj.collision,
+    }));
+  }
+
+  function detectCollision(player, board, { x: posX, y: posY }) {
+    for (let y = 0; y < player.gamePiece.length; y++) {
+      for (let x = 0; x < player.gamePiece[0].length; x++) {
+        if (player.gamePiece[y][x] !== 0) {
+          if (
+            !board[y + player.position.y + posY] ||
+            !board[y + player.position.y + posY][
+              x + player.position.x + posX
+            ] ||
+            board[y + player.position.y + posY][
+              x + player.position.x + posX
+            ][1] !== "clear"
+          )
+            return true;
+        }
+      }
+    }
   }
 
   useEffect(() => {
@@ -79,10 +106,12 @@ function Tetris() {
         });
       });
 
+      if (player.collided) startPlayer();
+
       return updated;
     }
     setBoard((prev) => updatedBoard(prev));
-  }, [player]);
+  }, [player, startPlayer]);
 
   return (
     <div
