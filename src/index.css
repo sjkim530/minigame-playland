@@ -48,6 +48,7 @@ body {
 
 .tetris-container {
   display: flex;
+  justify-content: center;
   align-items: flex-start;
   padding: 40px;
   margin: 0 auto;
@@ -57,5 +58,5 @@ body {
 .tetris-wrapper {
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
 }
