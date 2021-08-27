@@ -3,7 +3,6 @@ import Board from "./Board";
 import NextBlock from "./NextBlock";
 import Score from "./Score";
 import gamePieces, { randomPiece } from "../../gamePieces";
-import { detect } from "async";
 
 function Tetris() {
   const [playing, setPlaying] = useState(false);
@@ -13,6 +12,7 @@ function Tetris() {
     collision: false,
   });
   const [board, setBoard] = useState(createBoard());
+  const [rowsCleared, setRowsCleared] = useState(0);
 
   function createBoard() {
     return Array.from(Array(21), () => new Array(10).fill([0, "clear"]));
@@ -24,7 +24,6 @@ function Tetris() {
     startPlayer();
   }
 
-  // function startPlayer() {
   const startPlayer = useCallback(() => {
     setPlayer({
       position: { x: 3, y: 0 },
@@ -32,7 +31,6 @@ function Tetris() {
       collision: false,
     });
   }, []);
-  // }
 
   function movePlayer(direction) {
     if (direction > 0) {
@@ -116,6 +114,20 @@ function Tetris() {
   }
 
   useEffect(() => {
+    setRowsCleared(0);
+
+    function removeCompletedRow(board) {
+      return board.reduce((accum, curr) => {
+        if (curr.findIndex((cell) => cell[0] === 0) === -1) {
+          setRowsCleared((prev) => prev + 1);
+          accum.unshift(new Array(board[0].length).fill([0, "clear"]));
+          return accum;
+        }
+        accum.push(curr);
+        return accum;
+      }, []);
+    }
+
     function updatedBoard(prev) {
       const updated = prev.map((row) =>
         row.map((cell) => (cell[1] === "clear" ? [0, "clear"] : cell))
@@ -132,7 +144,10 @@ function Tetris() {
         });
       });
 
-      if (player.collision) startPlayer();
+      if (player.collision) {
+        startPlayer();
+        return removeCompletedRow(updated);
+      }
 
       return updated;
     }

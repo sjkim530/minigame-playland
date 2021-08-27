@@ -2,7 +2,7 @@ import Cell from "./Cell";
 
 function Board(props) {
   const gameBoard = props.createBoard;
-
+  // console.log(gameBoard);
   return (
     <div className="board">
       {gameBoard.map((row) =>
