@@ -3,6 +3,7 @@ import Board from "./Board";
 import NextBlock from "./NextBlock";
 import Score from "./Score";
 import gamePieces, { randomPiece } from "../../gamePieces";
+import { detect } from "async";
 
 function Tetris() {
   const [playing, setPlaying] = useState(false);
@@ -54,6 +55,7 @@ function Tetris() {
       if (e.key === "ArrowLeft") movePlayer(-1);
       else if (e.key === "ArrowRight") movePlayer(1);
       else if (e.key === "ArrowDown") dropPlayer();
+      else if (e.key === "ArrowUp") rotatePlayer(player.gamePiece, board);
     } else {
       if (e.key === " ") startGame();
     }
@@ -89,6 +91,30 @@ function Tetris() {
     }
   }
 
+  function rotatePlayer(gamePiece, board) {
+    const playerCopy = JSON.parse(JSON.stringify(player));
+    const rotation = gamePiece.map((row, idx) =>
+      gamePiece.map((col) => col[idx])
+    );
+
+    playerCopy.gamePiece = rotation.map((row) => row.reverse());
+
+    const posX = playerCopy.position.x;
+    let offset = 1;
+
+    while (detectCollision(playerCopy, board, { x: 0, y: 0 })) {
+      playerCopy.position.x += offset;
+      offset = -(offset + (offset > 0 ? 1 : -1));
+
+      if (offset > playerCopy.gamePiece[0].length) {
+        playerCopy.gamePiece = rotation.reverse();
+        playerCopy.position.x = posX;
+        return;
+      }
+    }
+    setPlayer(playerCopy);
+  }
+
   useEffect(() => {
     function updatedBoard(prev) {
       const updated = prev.map((row) =>
@@ -106,7 +132,7 @@ function Tetris() {
         });
       });
 
-      if (player.collided) startPlayer();
+      if (player.collision) startPlayer();
 
       return updated;
     }
