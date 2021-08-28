@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Board from "./Board";
 import NextBlock from "./NextBlock";
 import Score from "./Score";
+import Legend from "./Legend";
 import gamePieces, { randomPiece } from "../../gamePieces";
 
 function Tetris() {
@@ -290,6 +291,7 @@ function Tetris() {
         <div className="side-container">
           <NextBlock displayBoard={displayBoard} />
           <Score score={score} rows={rows} level={level} />
+          <Legend />
         </div>
       </div>
     </div>
