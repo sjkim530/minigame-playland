@@ -1,8 +1,9 @@
-function Score() {
+function Score(props) {
   return (
     <div className="score-container">
-      <p>Score: </p>
-      <p>Rows Cleared: </p>
+      <p>Level: {props.level}</p>
+      <p>Score: {props.score}</p>
+      <p>Rows Cleared: {props.rows}</p>
     </div>
   );
 }

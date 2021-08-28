@@ -1,3 +1,4 @@
+import React from "react";
 import gamesPieces from "../../gamePieces";
 
 function Cell(props) {
@@ -19,4 +20,4 @@ function Cell(props) {
   );
 }
 
-export default Cell;
+export default React.memo(Cell);

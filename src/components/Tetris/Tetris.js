@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Board from "./Board";
 import NextBlock from "./NextBlock";
 import Score from "./Score";
@@ -12,16 +12,37 @@ function Tetris() {
     collision: false,
   });
   const [board, setBoard] = useState(createBoard());
-  const [rowsCleared, setRowsCleared] = useState(0);
+  const [linesCleared, setLinesCleared] = useState(0);
+  const [dropSpeed, setDropSpeed] = useState(null);
+  const [score, setScore] = useState(0);
+  const [rows, setRows] = useState(0);
+  const [level, setLevel] = useState(0);
+  const [displayBoard, setDisplayBoard] = useState(createNewBlockBoard());
+  const [nextBlock, setNextBlock] = useState(null);
+  const [gameOver, setGameOver] = useState(false);
+  console.log(player);
+  console.log(dropSpeed);
+  console.log("render");
 
   function createBoard() {
-    return Array.from(Array(21), () => new Array(10).fill([0, "clear"]));
+    return Array.from(Array(20), () => new Array(10).fill([0, "clear"]));
+  }
+
+  function createNewBlockBoard() {
+    return Array.from(Array(4), () => new Array(4).fill([0, "clear"]));
   }
 
   function startGame() {
     setBoard(createBoard());
+    setDisplayBoard(createNewBlockBoard());
     setPlaying(true);
     startPlayer();
+    setDropSpeed(1000);
+    setScore(0);
+    setRows(0);
+    setLevel(1);
+    startNextBlockDisplay(displayBoard);
+    setGameOver(false);
   }
 
   const startPlayer = useCallback(() => {
@@ -31,6 +52,32 @@ function Tetris() {
       collision: false,
     });
   }, []);
+
+  const startNextBlockDisplay = useCallback((prev) => {
+    const nextBlock = randomPiece().shape;
+    const updated = prev.map((row) =>
+      row.map((cell) => (cell[1] === "clear" ? [0, "clear"] : cell))
+    );
+
+    nextBlock.forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value !== 0) {
+          updated[y][x] = [value, "clear"];
+        }
+      });
+    });
+
+    setDisplayBoard(updated);
+    setNextBlock(nextBlock);
+  }, []);
+
+  const startNextBlock = useCallback(() => {
+    setPlayer({
+      position: { x: 3, y: 0 },
+      gamePiece: nextBlock,
+      collision: false,
+    });
+  }, [nextBlock]);
 
   function movePlayer(direction) {
     if (direction > 0) {
@@ -45,10 +92,19 @@ function Tetris() {
   function dropPlayer() {
     if (!detectCollision(player, board, { x: 0, y: 1 }))
       updatePlayer({ x: 0, y: 0.5, collision: false });
-    else updatePlayer({ x: 0, y: 0, collision: true });
+    else {
+      if (player.position.y < 1) {
+        setDropSpeed(null);
+        setPlaying(false);
+        setGameOver(true);
+      }
+      updatePlayer({ x: 0, y: 0, collision: true });
+    }
   }
 
   function handleKeyPress(e) {
+    e.stopPropagation();
+    e.preventDefault();
     if (playing) {
       if (e.key === "ArrowLeft") movePlayer(-1);
       else if (e.key === "ArrowRight") movePlayer(1);
@@ -113,13 +169,53 @@ function Tetris() {
     setPlayer(playerCopy);
   }
 
-  useEffect(() => {
-    setRowsCleared(0);
+  function useInterval(callback, delay) {
+    const savedCallback = useRef();
+    // Remember the latest callback.
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
 
-    function removeCompletedRow(board) {
+    // Set up the interval.
+    useEffect(() => {
+      function tick() {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        const id = setInterval(tick, delay);
+        return () => {
+          clearInterval(id);
+        };
+      }
+    }, [delay]);
+  }
+
+  useInterval(() => {
+    dropPlayer();
+  }, dropSpeed);
+
+  const updateLevelAndDropSpeed = useCallback(() => {
+    if (rows > level * 10) {
+      setLevel((prev) => prev + 1);
+      setDropSpeed((prev) => prev + 200);
+    }
+  }, [level, rows]);
+
+  const calcScore = useCallback(() => {
+    const linePoints = [40, 100, 300, 1200];
+    if (linesCleared > 0) {
+      setScore((prev) => prev + linePoints[linesCleared - 1] * level);
+      setRows((prev) => prev + linesCleared);
+    }
+  }, [level, linesCleared]);
+
+  useEffect(() => {
+    setLinesCleared(0);
+
+    function removeCompletedLine(board) {
       return board.reduce((accum, curr) => {
         if (curr.findIndex((cell) => cell[0] === 0) === -1) {
-          setRowsCleared((prev) => prev + 1);
+          setLinesCleared((prev) => prev + 0.5);
           accum.unshift(new Array(board[0].length).fill([0, "clear"]));
           return accum;
         }
@@ -135,6 +231,7 @@ function Tetris() {
 
       player.gamePiece.forEach((row, y) => {
         row.forEach((value, x) => {
+          console.log(updated);
           if (value !== 0) {
             updated[y + player.position.y][x + player.position.x] = [
               value,
@@ -145,14 +242,31 @@ function Tetris() {
       });
 
       if (player.collision) {
-        startPlayer();
-        return removeCompletedRow(updated);
+        startNextBlock();
+        startNextBlockDisplay(displayBoard);
+        return removeCompletedLine(updated);
       }
 
       return updated;
     }
+
     setBoard((prev) => updatedBoard(prev));
-  }, [player, startPlayer]);
+  }, [
+    player,
+    playing,
+    displayBoard,
+    startPlayer,
+    startNextBlockDisplay,
+    startNextBlock,
+  ]);
+
+  useEffect(() => {
+    calcScore();
+  }, [calcScore, linesCleared, score]);
+
+  useEffect(() => {
+    updateLevelAndDropSpeed();
+  }, [updateLevelAndDropSpeed]);
 
   return (
     <div
@@ -161,11 +275,21 @@ function Tetris() {
       tabIndex="0"
       onKeyDown={handleKeyPress}
     >
+      {gameOver ? (
+        <div className="game-over">
+          <div className="game-over-text">
+            <h1>GAME OVER</h1>
+            <p>Press the SPACEBAR to play again</p>
+          </div>
+        </div>
+      ) : (
+        <span></span>
+      )}
       <div className="tetris-container">
         <Board createBoard={board} />
         <div className="side-container">
-          <NextBlock />
-          <Score />
+          <NextBlock displayBoard={displayBoard} />
+          <Score score={score} rows={rows} level={level} />
         </div>
       </div>
     </div>
