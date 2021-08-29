@@ -13,5 +13,5 @@ The most iconic tile-matching game
 * Rotate - Up Arrow Key
 
 
-## ...and more games to come
+### ...and more games to come
 
