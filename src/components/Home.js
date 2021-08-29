@@ -18,6 +18,7 @@ function Home() {
           </Link>
         </div>
       </div>
+      <p className="more-games-message">...and more games to come</p>
     </div>
   );
 }
