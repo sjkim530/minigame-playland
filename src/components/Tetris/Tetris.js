@@ -84,16 +84,16 @@ function Tetris() {
   function movePlayer(direction) {
     if (direction > 0) {
       if (!detectCollision(player, board, { x: direction, y: 0 }))
-        updatePlayer({ x: direction - 0.5, y: 0, collision: false });
+        updatePlayer({ x: direction, y: 0, collision: false });
     } else {
       if (!detectCollision(player, board, { x: direction, y: 0 }))
-        updatePlayer({ x: direction + 0.5, y: 0, collision: false });
+        updatePlayer({ x: direction, y: 0, collision: false });
     }
   }
 
   function dropPlayer() {
     if (!detectCollision(player, board, { x: 0, y: 1 }))
-      updatePlayer({ x: 0, y: 0.5, collision: false });
+      updatePlayer({ x: 0, y: 1, collision: false });
     else {
       if (player.position.y < 1) {
         setDropSpeed(null);
