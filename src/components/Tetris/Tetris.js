@@ -150,22 +150,24 @@ function Tetris() {
       gamePiece.map((col) => col[idx])
     );
 
-    playerCopy.gamePiece = rotation.map((row) => row.reverse());
+    if (gamePiece.join("") !== "0,O,O0,O,O") {
+      playerCopy.gamePiece = rotation.map((row) => row.reverse());
 
-    const posX = playerCopy.position.x;
-    let offset = 1;
+      const posX = playerCopy.position.x;
+      let offset = 1;
 
-    while (detectCollision(playerCopy, board, { x: 0, y: 0 })) {
-      playerCopy.position.x += offset;
-      offset = -(offset + (offset > 0 ? 1 : -1));
+      while (detectCollision(playerCopy, board, { x: 0, y: 0 })) {
+        playerCopy.position.x += offset;
+        offset = -(offset + (offset > 0 ? 1 : -1));
 
-      if (offset > playerCopy.gamePiece[0].length) {
-        playerCopy.gamePiece = rotation.reverse();
-        playerCopy.position.x = posX;
-        return;
+        if (offset > playerCopy.gamePiece[0].length) {
+          playerCopy.gamePiece = rotation.reverse();
+          playerCopy.position.x = posX;
+          return;
+        }
       }
+      setPlayer(playerCopy);
     }
-    setPlayer(playerCopy);
   }
 
   function useInterval(callback, delay) {
