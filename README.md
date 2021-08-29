@@ -1,6 +1,8 @@
 # Minigame Playland
 Play your favorite classic 2D games
 
+Heroku: https://minigame-playland.herokuapp.com/
+
 ## TETRIS
 The most iconic tile-matching game
 
