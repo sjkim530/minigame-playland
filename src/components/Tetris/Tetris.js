@@ -294,6 +294,7 @@ function Tetris() {
           <Legend />
         </div>
       </div>
+      <p>**To Start Game, click on Tetris board, then hit your Spacebar**</p>
     </div>
   );
 }
