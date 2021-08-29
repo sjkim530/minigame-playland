@@ -273,10 +273,6 @@ function Tetris() {
       tabIndex="0"
       onKeyDown={handleKeyPress}
     >
-      <GoBack />
-      <p className="start-game-message">
-        **To Start Game, click on screen, then hit your Spacebar**
-      </p>
       {gameOver ? (
         <div className="game-over">
           <div className="game-over-text">
@@ -287,6 +283,11 @@ function Tetris() {
       ) : (
         <span></span>
       )}
+      <GoBack />
+      <p className="start-game-message">
+        **To Start Game, click on screen, then hit your Spacebar**
+      </p>
+
       <div className="tetris-container">
         <Board createBoard={board} />
         <div className="side-container">
