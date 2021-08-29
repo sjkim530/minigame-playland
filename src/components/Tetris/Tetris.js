@@ -22,9 +22,6 @@ function Tetris() {
   const [displayBoard, setDisplayBoard] = useState(createNewBlockBoard());
   const [nextBlock, setNextBlock] = useState(null);
   const [gameOver, setGameOver] = useState(false);
-  console.log(player);
-  console.log(dropSpeed);
-  console.log("render");
 
   function createBoard() {
     return Array.from(Array(20), () => new Array(10).fill([0, "clear"]));
@@ -199,7 +196,7 @@ function Tetris() {
   const updateLevelAndDropSpeed = useCallback(() => {
     if (rows > level * 10) {
       setLevel((prev) => prev + 1);
-      setDropSpeed((prev) => prev + 200);
+      setDropSpeed((prev) => prev + 500);
     }
   }, [level, rows]);
 
@@ -233,7 +230,6 @@ function Tetris() {
 
       player.gamePiece.forEach((row, y) => {
         row.forEach((value, x) => {
-          console.log(updated);
           if (value !== 0) {
             updated[y + player.position.y][x + player.position.x] = [
               value,
