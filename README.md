@@ -3,6 +3,12 @@ Play your favorite classic 2D games
 
 Heroku: https://minigame-playland.herokuapp.com/
 
+## Technology Stack
+* React
+* Javascript
+* CSS
+* HTML
+
 ## TETRIS
 The most iconic tile-matching game
 
