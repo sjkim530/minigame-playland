@@ -217,7 +217,7 @@ function Tetris() {
     function removeCompletedLine(board) {
       return board.reduce((accum, curr) => {
         if (curr.findIndex((cell) => cell[0] === 0) === -1) {
-          setLinesCleared((prev) => prev + 0.5);
+          setLinesCleared((prev) => prev + 1);
           accum.unshift(new Array(board[0].length).fill([0, "clear"]));
           return accum;
         }
