@@ -196,7 +196,7 @@ function Tetris() {
   const updateLevelAndDropSpeed = useCallback(() => {
     if (rows > level * 10) {
       setLevel((prev) => prev + 1);
-      setDropSpeed((prev) => prev + 500);
+      setDropSpeed((prev) => prev - 100);
     }
   }, [level, rows]);
 
