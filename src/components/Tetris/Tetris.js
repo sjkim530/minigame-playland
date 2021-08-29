@@ -4,7 +4,7 @@ import NextBlock from "./NextBlock";
 import Score from "./Score";
 import Legend from "./Legend";
 import gamePieces, { randomPiece } from "../../gamePieces";
-import { Link } from "react-router-dom";
+import GoBack from "../GoBack";
 
 function Tetris() {
   const [playing, setPlaying] = useState(false);
@@ -277,9 +277,7 @@ function Tetris() {
       tabIndex="0"
       onKeyDown={handleKeyPress}
     >
-      <span className="go-back">
-        <Link to="/">← Go Back</Link>
-      </span>
+      <GoBack />
       <p className="start-game-message">
         **To Start Game, click on screen, then hit your Spacebar**
       </p>
