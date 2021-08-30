@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #ffb35c;
 }
 
 .board {
@@ -48,7 +49,7 @@ body {
   justify-content: space-evenly;
   align-items: center;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .games-container img {
@@ -79,10 +80,7 @@ body {
 .home-container {
   display: flex;
   flex-direction: column;
-  background-color: #ffb35c;
   color: white;
-  width: 100vw;
-  height: 100vh;
   align-items: center;
 }
 
@@ -90,14 +88,23 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 25px;
 }
 
-.home-header h1 {
+.home-title {
   border: 4px solid white;
-  width: 400px;
+  width: 350px;
   text-align: center;
-  padding: 15px 0 15px 0;
-  border-radius: 35px;
+  border-radius: 50px;
+  margin-bottom: 20px;
+}
+
+.home-title h1 {
+  margin: 10px 0 10px 0;
+}
+
+.home-title h3 {
+  margin: 10px 0 10px 0;
 }
 
 .legend-container {
@@ -115,6 +122,31 @@ body {
 .legend-container ul {
   list-style-type: none;
   padding: 0;
+}
+
+.left-profile-container {
+  margin-right: 25px;
+}
+
+.left-profile-container img {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 4px solid white;
+}
+
+.mission-container {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.mission-container h1 {
+  text-align: center;
+}
+
+.mission-container p {
+  font-size: 1.1em;
+  font-weight: bold;
 }
 
 .more-games-message {
@@ -141,6 +173,24 @@ body {
   border-radius: 20px;
 }
 
+.profile-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-bottom: 100px;
+}
+
+.right-profile-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 25px;
+}
+
+.right-profile-container h3 {
+  margin-bottom: 0;
+  text-align: center;
+}
+
 .score-container {
   display: flex;
   flex-direction: column;
@@ -160,6 +210,19 @@ body {
   border: 2px solid #333;
   border-left: 0px;
   background-color: white;
+}
+
+.social-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  justify-content: center;
+}
+
+.social-container img {
+  width: 30px;
+  height: 30px;
+  padding: 0 10px 0 10px;
 }
 
 .start-game-message {
@@ -192,5 +255,4 @@ body {
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;
-  background-color: #ffb35c;
 }
