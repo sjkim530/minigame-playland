@@ -67,6 +67,7 @@ body {
   padding: 7px;
   margin: 15px 0 0 20px;
   border-radius: 50px;
+  z-index: 3;
 }
 
 .go-back a {
